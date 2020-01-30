@@ -2,7 +2,7 @@
 setlocal EnableExtensions EnableDelayedExpansion
 
 cd /D "%~dp0"
-del "GeneratedDocs\html\index.html" >nul 2>&1
+del "GeneratedDocs~\html\index.html" >nul 2>&1
 del "doxygen_mod" >nul 2>&1
 
 for /F "usebackq tokens=*" %%x in (Doxyfile) do (

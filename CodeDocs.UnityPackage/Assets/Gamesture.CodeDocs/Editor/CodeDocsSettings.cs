@@ -47,7 +47,7 @@ namespace Gamesture.CodeDocs
 
         public static bool AreDocsGenerated()
         {
-            return File.Exists(Path.Combine(DocsRootPath, "GeneratedDocs", "html", "index.html"));
+            return File.Exists(Path.Combine(DocsRootPath, "GeneratedDocs~", "html", "index.html"));
         }
 
         public static string DocsRootPath

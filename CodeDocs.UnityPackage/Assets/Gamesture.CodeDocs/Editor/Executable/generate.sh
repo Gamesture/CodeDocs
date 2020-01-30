@@ -10,5 +10,6 @@ cd ${script_dir}
 sed s~_gamesture_product_~${1}~g Doxyfile > Doxyfile_product
 sed s~_gamesture_sources_~${2}~g Doxyfile_product > Doxyfile_mod
 rm Doxyfile_product
+rm -rf GeneratedDocs~
 doxygen Doxyfile_mod
 rm Doxyfile_mod
