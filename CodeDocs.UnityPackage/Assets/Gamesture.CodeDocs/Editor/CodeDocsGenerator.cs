@@ -52,9 +52,9 @@ namespace Gamesture.CodeDocs
             }
         }
 
-        private static Process StartCommand(string command, string args)
+        private static Process StartCommand(string command, params string[] args)
         {
-            ProcessStartInfo processInfo = new ProcessStartInfo(command, args)
+            ProcessStartInfo processInfo = new ProcessStartInfo(command, string.Join(" ", args))
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -99,7 +99,7 @@ namespace Gamesture.CodeDocs
         [MenuItem("Gamesture/Code Docs/Open")]
         public static void OpenDocs()
         {
-            StartCommand(CodeDocsSettings.OpenDocsExe, null);
+            StartCommand(CodeDocsSettings.OpenDocsExe, PlayerSettings.productName);
         }
 
         [MenuItem("Gamesture/Code Docs/Open", true)]
@@ -140,7 +140,8 @@ namespace Gamesture.CodeDocs
             }
             
             _shouldClosePopup = false;
-            Process generateProcess = StartCommand(CodeDocsSettings.GenerateDocsExe, CodeDocsSettings.SourcesPath);
+            Process generateProcess = StartCommand(CodeDocsSettings.GenerateDocsExe, PlayerSettings.productName,
+                CodeDocsSettings.SourcesPath);
             CodeDocsInfoPopup.Show(out _updateTextAction, out _closePopup);
             
             EditorApplication.update += Update;
