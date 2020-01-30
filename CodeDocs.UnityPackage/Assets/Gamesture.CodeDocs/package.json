@@ -1,7 +1,7 @@
 {
     "name": "com.gamesture.code_docs",
     "displayName": "Gamesture Code Docs",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "unity": "2018.4.5",
     "description": "Plugin that helps generating Doxygen documentation. Do not forget to have CodeDocs submodule in your project!",
     "keywords": [
