@@ -1,12 +1,14 @@
 ### Include CodeDocs in Unity project:
-- add to file Packages/manifest.json following line:
-`"com.gamesture.code_docs": "https://github.com/Gamesture/CodeDocs.git#__commit_hash__",`
+- add to file Packages/manifest.json following line:\
+`"com.gamesture.code_docs": "https://github.com/Gamesture/CodeDocs.git#__commit_hash__",`\
 where __commit_hash__ is the latest commit hash from upm branch.
+- setup source dir by choosing menu _Gamesture/Code Docs/Configure_\
+(usual scripts location is `<your_unity_project>/Assets/Scripts`)
 
 ### To include CodeDocs in non-Unity project:
 - make this repository as submodule to your repository
-- make batch file that executes generate.bat (Windows) or generate.sh (Mac) with first parameter is name of the product and second is root folder of your sources
-i.e. `generate.sh Questland ~/project/questland_client/Assets/Scripts`
+- make batch file that executes generate.bat (Windows) or generate.sh (Mac) with first parameter is name of the product and second is root folder of your sources\
+i.e. `generate.sh Questland ~/project/questland_client/Assets/Scripts`\
  (scripts location is `CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs/Executable`)
 
 ### Creating new release
