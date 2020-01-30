@@ -7,7 +7,7 @@ public static class CreatePackage
     [MenuItem("Gamesture/Export Package", false, 20)]
     public static void Export()
     {
-        const string SOURCE = "Assets/Gamesture";
+        const string SOURCE = "Assets/Gamesture.CodeDocs";
         string destination = Path.Combine(Application.dataPath, "..", "build", "Gamesture.CodeDocs.unitypackage");
         string destinationDir = Path.GetDirectoryName(destination);
 
