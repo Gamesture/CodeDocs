@@ -16,10 +16,11 @@ namespace Gamesture.CodeDocs
         
         private void OnGUI()
         {
-            EditorGUI.BeginDisabledGroup(CodeDocsSettings.IsSetFromCode);
-            
             EditorGUILayout.BeginVertical();
+            
+            GUILayout.Label("path initialized from package cache");
             EditorGUILayout.BeginHorizontal();
+            EditorGUI.BeginDisabledGroup(true);
             
             // docs root path
             CodeDocsSettings.DocsRootPath = EditorGUILayout.TextField("DOCS ROOT:", CodeDocsSettings.DocsRootPath);
@@ -33,15 +34,12 @@ namespace Gamesture.CodeDocs
             
             EditorGUILayout.EndHorizontal();
             
-            // docs root selection
-            if (GUILayout.Button("select", GUILayout.Width(50)))
-            {
-                CodeDocsSettings.DocsRootPath =
-                    EditorUtility.OpenFolderPanel("Docs Root Path", Path.Combine(Application.dataPath, ".."), "");
-            }
-            
+            EditorGUI.EndDisabledGroup();
+
             EditorGUILayout.Space();
 
+            EditorGUI.BeginDisabledGroup(CodeDocsSettings.IsSetFromCode);
+            
             EditorGUILayout.BeginHorizontal();
             
             // sources path
@@ -69,7 +67,7 @@ namespace Gamesture.CodeDocs
 
             if (CodeDocsSettings.IsSetFromCode)
             {
-                GUILayout.Label($"Cannot modify settings, it was set from code, find method {nameof(CodeDocsSettings.SetConfiguration)}");
+                GUILayout.Label($"Cannot modify settings, it was set from code, find method {nameof(CodeDocsSettings.SetSourcesPath)}");
                 if (GUILayout.Button("CLEAR ALL", GUILayout.Width(150)))
                 {
                     CodeDocsSettings.ClearConfig();
