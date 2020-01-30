@@ -9,6 +9,31 @@ namespace Gamesture.CodeDocs
         private const string SOURCES_PATH_KEY = "gamesture.codedocs.sources_path";
         private const string SET_WITH_CODE = "gamesture.codedocs.set_from_code";
 
+        static CodeDocsSettings()
+        {
+            AutoSetup();
+        }
+
+        [UnityEditor.Callbacks.DidReloadScripts]
+        public static void AutoSetup()
+        {
+            if (IsProperRootPath)
+            {
+                return;
+            }
+            
+            string[] files = Directory.GetFiles(Path.Combine(Application.dataPath, "..", "Library", "PackageCache"),
+                "doxygen.exe", SearchOption.AllDirectories);
+
+            if (files.Length != 1)
+            {
+                Debug.LogError("cannot find doxygen folder");
+                return;
+            }
+            
+            DocsRootPath = Path.GetDirectoryName(Path.GetFullPath(files[0]));
+        }
+
         public static bool IsProperlyConfigured()
         {
             return IsProperRootPath && IsProperSourcesPath;
@@ -67,12 +92,10 @@ namespace Gamesture.CodeDocs
         /// Use this method to setup configuration from code, for example on Unity editor startup.
         /// It will prevent new programmers to input paths manually.
         /// </summary>
-        /// <param name="docsRootPath">Path to CodeDocs folder containing doxygen and batch/sh scripts</param>
         /// <param name="sourcesPath">Path to folder containing source files from which documentation will be generated</param>
-        public static void SetConfiguration(string docsRootPath, string sourcesPath)
+        public static void SetSourcesPath(string sourcesPath)
         {
             IsSetFromCode = true;
-            DocsRootPath = docsRootPath;
             SourcesPath = sourcesPath;
         }
 
