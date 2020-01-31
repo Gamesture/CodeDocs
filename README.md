@@ -31,5 +31,5 @@ i.e. `generate.sh Questland ~/project/questland_client/Assets/Scripts`\
  (scripts location is `CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs/Executable`)
 
 ### Creating new release
-When you want to release new version of this package, just commit everyting to master branch and execute `create_release.sh` script (Mac only).
+When you want to release new version of this package, just commit everyting to master branch and execute `create_release.sh` script (use Mac or console in Git Extensions on Windows).
 After that notify everyone using this package to update it to the newest commit.
