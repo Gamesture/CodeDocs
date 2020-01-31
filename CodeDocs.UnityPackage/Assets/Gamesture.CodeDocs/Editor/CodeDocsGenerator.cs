@@ -1,7 +1,6 @@
 ﻿﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using UnityEditor;
 using UnityEngine;
@@ -59,8 +58,8 @@ namespace Gamesture.CodeDocs
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
-                CreateNoWindow = false,
-                ErrorDialog = true
+                CreateNoWindow = true,
+                ErrorDialog = true,
             };
 
 
@@ -72,6 +71,7 @@ namespace Gamesture.CodeDocs
             
             process.ErrorDataReceived += ErrorReceivedEventHandler;
             process.OutputDataReceived += OutputReceivedEventHandler;
+            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
