@@ -78,7 +78,7 @@ namespace Gamesture.CodeDocs
                     return;
                 }
 
-                if (module.Name.Trim().Any(Char.IsWhiteSpace))
+                if (module.Name.Trim().Any(char.IsWhiteSpace))
                 {
                     Debug.LogError("cannot save doxygen file, module name contains white space");
                     return;
@@ -122,7 +122,7 @@ namespace Gamesture.CodeDocs
             }
 
             EditorGUILayout.BeginVertical();
-            for(int i = 0; i < _modules.Count; i++)
+            for (int i = 0; i < _modules.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
                 _modules[i].Name = EditorGUILayout.TextField(_modules[i].Name);
