@@ -1,4 +1,5 @@
 using System.IO;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,51 +25,69 @@ namespace Gamesture.CodeDocs
             string[] files = Directory.GetFiles(Path.Combine(Application.dataPath, "..", "Library", "PackageCache"),
                 "doxygen.exe", SearchOption.AllDirectories);
 
-            if (files.Length != 1)
+            if (files.Length == 1)
             {
-                Debug.LogError("cannot find doxygen folder");
-                return;
+                DocsRootPath = Path.GetDirectoryName(Path.GetFullPath(files[0]));
             }
-            
-            DocsRootPath = Path.GetDirectoryName(Path.GetFullPath(files[0]));
         }
 
-        public static bool IsProperlyConfigured()
+        internal static bool IsProperlyConfigured()
         {
             return IsProperRootPath && IsProperSourcesPath;
         }
 
-        public static bool IsProperRootPath => File.Exists(GenerateDocsExe);
-        
-        public static bool IsProperSourcesPath => Directory.Exists(SourcesPath);
+        internal static bool IsProperRootPath => File.Exists(GenerateDocsExe);
 
-        public static string DoxygenFilePath => Path.Combine(SourcesPath, "doxygen.txt");
+        internal static bool IsProperSourcesPath => Directory.Exists(SourcesPath);
 
-        public static bool AreDocsGenerated()
+        internal static string DoxygenFilePath => Path.Combine(SourcesPath, "doxygen.txt");
+
+        internal static bool AreDocsGenerated()
         {
             return File.Exists(Path.Combine(DocsRootPath, "GeneratedDocs~", "html", "index.html"));
         }
 
-        public static string DocsRootPath
+        internal static string DocsRootPath
         {
-            get => GetConfig().DocsRootPath;
-            set => GetConfig().DocsRootPath = value;
+            get => GetConfig()?.DocsRootPath;
+            set
+            {
+                CodeDocsConfig config = GetConfig();
+                if (config != null)
+                {
+                    config.DocsRootPath = value;
+                }
+            }
         }
 
-        public static string SourcesPath
+        internal static string SourcesPath
         {
-            get => GetConfig().SourcesPath;
-            set => GetConfig().SourcesPath = value;
+            get => GetConfig()?.SourcesPath;
+            set
+            {
+                CodeDocsConfig config = GetConfig();
+                if (config != null)
+                {
+                    config.SourcesPath = value;
+                }
+            }
         }
 
-        public static bool IsSetFromCode
+        internal static bool IsSetFromCode
         {
-            get => GetConfig().IsSetFromCode;
-            private set => GetConfig().IsSetFromCode = value;
+            get => GetConfig()?.IsSetFromCode ?? false;
+            private set
+            {
+                CodeDocsConfig config = GetConfig();
+                if (config != null)
+                {
+                    config.IsSetFromCode = value;
+                }
+            }
         }
 
-        public static string OpenDocsExe => Path.Combine(DocsRootPath, $"open.{GetExeExtension()}");
-        public static string GenerateDocsExe => Path.Combine(DocsRootPath, $"generate.{GetExeExtension()}");
+        internal static string OpenDocsExe => Path.Combine(DocsRootPath, $"open.{GetExeExtension()}");
+        internal static string GenerateDocsExe => Path.Combine(DocsRootPath, $"generate.{GetExeExtension()}");
         
         private static string GetExeExtension()
         {
@@ -82,7 +101,7 @@ namespace Gamesture.CodeDocs
             }
         }
 
-        public static void ShowConfiguration()
+        internal static void ShowConfiguration()
         {
             CodeDocsSettingsPopup.Init();
         }
@@ -98,14 +117,20 @@ namespace Gamesture.CodeDocs
             SourcesPath = sourcesPath;
         }
 
-        public static void ClearConfig()
+        internal static void ClearConfig()
         {
-            GetConfig().SourcesPath = null;
-            GetConfig().DocsRootPath = null;
-            GetConfig().IsSetFromCode = false;
+            CodeDocsConfig config = GetConfig();
+            if (config == null)
+            {
+                return;
+            }
+
+            config.SourcesPath = null;
+            config.DocsRootPath = null;
+            config.IsSetFromCode = false;
         }
 
-
+        [CanBeNull]
         private static CodeDocsConfig GetConfig()
         {
             if (_config != null)
@@ -120,7 +145,13 @@ namespace Gamesture.CodeDocs
                 return _config;
             }
 
-            string dir = Path.Combine(Application.dataPath, Path.GetDirectoryName(CONFIG_PATH));
+            string dirName = Path.GetDirectoryName(CONFIG_PATH);
+            if (dirName == null)
+            {
+                return null;
+            }
+
+            string dir = Path.Combine(Application.dataPath, dirName);
             if (Directory.Exists(dir) == false)
             {
                 Directory.CreateDirectory(dir);

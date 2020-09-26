@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,15 @@ namespace Gamesture.CodeDocs
         private const string MODULE_POSTFIX = "*/";
 
         private List<Module> _modules;
-        
-        public static void Init()
+
+        internal static void Init()
         {
             CodeDocsModulesPopup window =
                 (CodeDocsModulesPopup) GetWindow(typeof(CodeDocsModulesPopup), true, "CodeDocs Modules");
             window.Show();
         }
 
+        [SuppressMessage("ReSharper", "InconsistentNaming")]
         [Serializable]
         private class Module
         {
@@ -64,9 +66,10 @@ namespace Gamesture.CodeDocs
             }
             
             StringBuilder content = new StringBuilder($"// generated automatically with {nameof(CodeDocsModulesPopup)}\n\n");
-            
-            foreach (Module module in _modules)
+
+            for (int i = 0; i < _modules.Count; i++)
             {
+                Module module = _modules[i];
                 if (module == null)
                 {
                     continue;
@@ -83,10 +86,10 @@ namespace Gamesture.CodeDocs
                     Debug.LogError("cannot save doxygen file, module name contains white space");
                     return;
                 }
-                
+
                 content.AppendLine($"{MODULE_PREFIX} {module.Name} {module.Description} {MODULE_POSTFIX}\n");
             }
-            
+
             if (File.Exists(CodeDocsSettings.DoxygenFilePath))
             {
                 File.Delete(CodeDocsSettings.DoxygenFilePath);

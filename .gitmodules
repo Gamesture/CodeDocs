@@ -1,0 +1,3 @@
+[submodule "DotSettings"]
+	path = DotSettings
+	url = git@github.com:Gamesture/DotSettings.git

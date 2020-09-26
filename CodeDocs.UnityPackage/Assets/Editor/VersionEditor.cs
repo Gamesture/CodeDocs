@@ -1,13 +1,18 @@
 using System.IO;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
 
 
 public class VersionEditor : EditorWindow
 {
+    [UsedImplicitly]
     private class PackageFormat
     {
+        // ReSharper disable once InconsistentNaming
+#pragma warning disable 649
         public string version;
+#pragma warning restore 649
     }
 
     private int _major;
