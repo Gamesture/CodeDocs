@@ -1,13 +1,12 @@
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 
 namespace Gamesture.CodeDocs
 {
     public static class CodeDocsSettings
     {
-        private const string DOCS_ROOT_PATH_KEY = "gamesture.codedocs.doxygen_path";
-        private const string SOURCES_PATH_KEY = "gamesture.codedocs.sources_path";
-        private const string SET_WITH_CODE = "gamesture.codedocs.set_from_code";
+        private static CodeDocsConfig _config;
 
         static CodeDocsSettings()
         {
@@ -17,6 +16,8 @@ namespace Gamesture.CodeDocs
         [UnityEditor.Callbacks.DidReloadScripts]
         public static void AutoSetup()
         {
+            ReadConfigFile();
+
             if (IsProperRootPath)
             {
                 return;
@@ -52,20 +53,20 @@ namespace Gamesture.CodeDocs
 
         public static string DocsRootPath
         {
-            get => UnityEditor.EditorPrefs.GetString(DOCS_ROOT_PATH_KEY);
-            set => UnityEditor.EditorPrefs.SetString(DOCS_ROOT_PATH_KEY, value);
+            get => _config.DocsRootPath;
+            set => _config.DocsRootPath = value;
         }
 
         public static string SourcesPath
         {
-            get => UnityEditor.EditorPrefs.GetString(SOURCES_PATH_KEY);
-            set => UnityEditor.EditorPrefs.SetString(SOURCES_PATH_KEY, value);
+            get => _config.SourcesPath;
+            set => _config.SourcesPath = value;
         }
 
         public static bool IsSetFromCode
         {
-            get => UnityEditor.EditorPrefs.GetBool(SET_WITH_CODE);
-            private set => UnityEditor.EditorPrefs.SetBool(SET_WITH_CODE, value);
+            get => _config.IsSetFromCode;
+            private set => _config.IsSetFromCode = value;
         }
 
         public static string OpenDocsExe => Path.Combine(DocsRootPath, $"open.{GetExeExtension()}");
@@ -101,9 +102,34 @@ namespace Gamesture.CodeDocs
 
         public static void ClearConfig()
         {
-            UnityEditor.EditorPrefs.DeleteKey(DOCS_ROOT_PATH_KEY);
-            UnityEditor.EditorPrefs.DeleteKey(SOURCES_PATH_KEY);
-            UnityEditor.EditorPrefs.DeleteKey(SET_WITH_CODE);
+            _config.SourcesPath = null;
+            _config.DocsRootPath = null;
+            _config.IsSetFromCode = false;
+        }
+
+        private static void ReadConfigFile()
+        {
+            if (_config != null)
+            {
+                return;
+            }
+
+            const string CONFIG_PATH = "Gamesture/CodeDocs/Config.asset";
+            _config = AssetDatabase.LoadAssetAtPath<CodeDocsConfig>($"Assets/{CONFIG_PATH}");
+            if (_config != null)
+            {
+                return;
+            }
+
+            string dir = Path.Combine(Application.dataPath, Path.GetDirectoryName(CONFIG_PATH));
+            if (Directory.Exists(dir) == false)
+            {
+                Directory.CreateDirectory(dir);
+            }
+
+            CodeDocsConfig configObject = ScriptableObject.CreateInstance<CodeDocsConfig>();
+            AssetDatabase.CreateAsset(configObject, $"Assets/{CONFIG_PATH}");
+            _config = Resources.Load<CodeDocsConfig>($"Assets/{CONFIG_PATH}");
         }
     }
 }
