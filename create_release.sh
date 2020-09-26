@@ -21,8 +21,9 @@ fi
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd ${script_dir}
 
-find ./CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs -name package.json -exec sed -i '' 's/"version": "[0-9]*\.[0-9]*\.[0-9]*"/"version": "'$1"\""/g {} \;
-git add ./CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs/package.json
+package_file=./CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs/package.json
+sed -i 's/"version": "[0-9]*\.[0-9]*\.[0-9]*"/"version": "'$1"\""/g ${package_file}
+git add ${package_file}
 check_last_error_code
 git commit -m "version $1"
 check_last_error_code
