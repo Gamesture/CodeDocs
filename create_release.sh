@@ -16,3 +16,7 @@ find ./CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs -name package.json -exec 
 git add -A
 git commit -m "version $1"
 git push
+
+git subtree split --prefix=CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs --branch upm
+git tag $1 upm
+git push origin upm
