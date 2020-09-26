@@ -16,8 +16,6 @@ namespace Gamesture.CodeDocs
         [UnityEditor.Callbacks.DidReloadScripts]
         public static void AutoSetup()
         {
-            ReadConfigFile();
-
             if (IsProperRootPath)
             {
                 return;
@@ -53,20 +51,20 @@ namespace Gamesture.CodeDocs
 
         public static string DocsRootPath
         {
-            get => _config.DocsRootPath;
-            set => _config.DocsRootPath = value;
+            get => GetConfig().DocsRootPath;
+            set => GetConfig().DocsRootPath = value;
         }
 
         public static string SourcesPath
         {
-            get => _config.SourcesPath;
-            set => _config.SourcesPath = value;
+            get => GetConfig().SourcesPath;
+            set => GetConfig().SourcesPath = value;
         }
 
         public static bool IsSetFromCode
         {
-            get => _config.IsSetFromCode;
-            private set => _config.IsSetFromCode = value;
+            get => GetConfig().IsSetFromCode;
+            private set => GetConfig().IsSetFromCode = value;
         }
 
         public static string OpenDocsExe => Path.Combine(DocsRootPath, $"open.{GetExeExtension()}");
@@ -102,23 +100,24 @@ namespace Gamesture.CodeDocs
 
         public static void ClearConfig()
         {
-            _config.SourcesPath = null;
-            _config.DocsRootPath = null;
-            _config.IsSetFromCode = false;
+            GetConfig().SourcesPath = null;
+            GetConfig().DocsRootPath = null;
+            GetConfig().IsSetFromCode = false;
         }
 
-        private static void ReadConfigFile()
+
+        private static CodeDocsConfig GetConfig()
         {
             if (_config != null)
             {
-                return;
+                return _config;
             }
 
             const string CONFIG_PATH = "Gamesture/CodeDocs/Config.asset";
             _config = AssetDatabase.LoadAssetAtPath<CodeDocsConfig>($"Assets/{CONFIG_PATH}");
             if (_config != null)
             {
-                return;
+                return _config;
             }
 
             string dir = Path.Combine(Application.dataPath, Path.GetDirectoryName(CONFIG_PATH));
@@ -130,6 +129,7 @@ namespace Gamesture.CodeDocs
             CodeDocsConfig configObject = ScriptableObject.CreateInstance<CodeDocsConfig>();
             AssetDatabase.CreateAsset(configObject, $"Assets/{CONFIG_PATH}");
             _config = Resources.Load<CodeDocsConfig>($"Assets/{CONFIG_PATH}");
+            return _config;
         }
     }
 }
