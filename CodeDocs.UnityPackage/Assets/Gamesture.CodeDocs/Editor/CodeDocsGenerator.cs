@@ -182,7 +182,7 @@ namespace Gamesture.CodeDocs
             }
         }
         
-        [MenuItem("Gamesture/Code Docs/Configure")]
+        [MenuItem("Gamesture/Code Docs/Settings")]
         public static void OpenConfig()
         {
             CodeDocsSettings.ShowConfiguration();
