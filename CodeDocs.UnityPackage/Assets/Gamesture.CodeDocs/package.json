@@ -1,12 +1,16 @@
 {
     "name": "com.gamesture.code_docs",
-    "displayName": "Gamesture Code Docs",
-    "version": "0.1.0",
+    "displayName": "Code Docs",
+    "version": "0.2.0",
     "unity": "2018.4.5",
     "description": "Plugin that helps generating Doxygen documentation. Do not forget to have CodeDocs submodule in your project!",
     "keywords": [
         "docs",
         "unity"
     ],
-    "category": "Unity"
+    "author": {
+    	"name" : "Gamesture",
+    	"email" : "dev@gamesture.com",
+    	"url" : "https://gamesture.com"
+    }
 }
