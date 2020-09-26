@@ -12,9 +12,9 @@ function check_last_error_code
 version=$1
 
 if [[ $1 =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "creating release date: " $1
+    echo "creating release: " $1
 else
-    echo "invalid relsase version:" $1
+    echo "invalid release version:" $1
     exit 1
 fi
 
