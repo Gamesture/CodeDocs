@@ -1,3 +1,6 @@
+## Windows requirements
+- install Doxygen from https://www.doxygen.nl/download.html
+
 ### Include CodeDocs in Unity project:
 - add to file Packages/manifest.json following line:\
 `"com.gamesture.code_docs": "https://github.com/Gamesture/CodeDocs.git#__commit_hash__",`\
