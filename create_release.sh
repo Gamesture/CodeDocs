@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 function check_last_error_code
 {
