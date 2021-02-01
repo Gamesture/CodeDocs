@@ -29,5 +29,5 @@ git commit -m "version $1"
 check_last_error_code
 git push
 check_last_error_code
-cd ./CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs && npm publish --registry https://unity-npm.admin-gamesture.com/ && cd -
+cd ./CodeDocs.UnityPackage/Assets/Gamesture.CodeDocs && npm publish --registry https://teamcity.admin-gamesture.com/ && cd -
 check_last_error_code
